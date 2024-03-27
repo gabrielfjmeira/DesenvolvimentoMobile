@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -80,9 +82,13 @@ class Cadastro : AppCompatActivity() {
                 Toast
                     .makeText(this, "Saved", Toast.LENGTH_LONG)
                     .show()
-                var intent = Intent()
-                setResult(RESULT_OK, intent)
-                finish()
+                showSaveDialog()
+                var delayMillis = 5000
+                Handler(Looper.getMainLooper()).postDelayed({
+                    var intent = Intent()
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }, delayMillis.toLong())
             }
         }
     }
@@ -137,5 +143,16 @@ class Cadastro : AppCompatActivity() {
         }
 
         erro.show();
+    }
+
+    private fun showSaveDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Dados Salvos!")
+        builder.setMessage("Os dados de cadastro foram salvos!")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }
